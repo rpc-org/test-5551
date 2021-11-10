@@ -1,0 +1,19 @@
+name: "Workflow Scan"
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  security-events: write
+
+jobs:
+  workflow-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - uses: rcowsill/workflow-scan-action@v1
