@@ -1,5 +1,7 @@
 name: rpc-org-5551-queries
 version: 0.0.1
 extractor: javascript
+libraryPathDependencies:
+  - codeql/javascript-queries
 dependencies:
-    codeql/javascript-all: "*"
+  codeql/javascript-all: "*"
