@@ -75,28 +75,11 @@ class ProbableJob extends Actions::Job {
   }
 }
 
-/**
- * Action step that doesn't contain `actor` or `label` check in `if:` or
- */
 class ProbablePullRequestTarget extends Actions::On, Actions::MappingOrSequenceOrScalar {
   ProbablePullRequestTarget() {
     exists(YAMLNode prtNode |
       // The `on:` is triggered on `pull_request_target`
-      this.getNode("pull_request_target") = prtNode and
-      (
-        // and either doesn't contain `types` filter
-        not exists(prtNode.getAChild())
-        or
-        // or has the filter, that is something else than just [labeled]
-        exists(Actions::MappingOrSequenceOrScalar prt, Actions::MappingOrSequenceOrScalar types |
-          types = prt.getNode("types") and
-          prtNode = prt and
-          (
-            not types.getElementCount() = 1 or
-            not exists(types.getNode("labeled"))
-          )
-        )
-      )
+      this.getNode("pull_request_target") = prtNode
     )
   }
 }
