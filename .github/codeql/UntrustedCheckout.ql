@@ -79,7 +79,26 @@ class ProbablePullRequestTarget extends Actions::On, Actions::MappingOrSequenceO
   ProbablePullRequestTarget() {
     exists(YAMLNode prtNode |
       // The `on:` is triggered on `pull_request_target`
-      this.getNode("pull_request_target") = prtNode
+      this.getNode("pull_request_target") = prtNode and
+      (
+        // and doesn't contain any filter
+        not exists(prtNode.getAChild())
+        or
+        // or doesn't contain `types` filter
+        not exists(Actions::MappingOrSequenceOrScalar prt, Actions::MappingOrSequenceOrScalar types |
+          types = prt.getNode("types") and
+          prtNode = prt
+        or
+        // or has the filter, that is something else than just [labeled]
+        exists(Actions::MappingOrSequenceOrScalar prt, Actions::MappingOrSequenceOrScalar types |
+          types = prt.getNode("types") and
+          prtNode = prt and
+          (
+            not types.getElementCount() = 1 or
+            not exists(types.getNode("labeled"))
+          )
+        )
+      )
     )
   }
 }
