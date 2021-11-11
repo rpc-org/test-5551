@@ -88,7 +88,7 @@ class ProbablePullRequestTarget extends Actions::On, Actions::MappingOrSequenceO
         not exists(Actions::MappingOrSequenceOrScalar prt, Actions::MappingOrSequenceOrScalar types |
           types = prt.getNode("types") and
           prtNode = prt
-        or
+        ) or
         // or has the filter, that is something else than just [labeled]
         exists(Actions::MappingOrSequenceOrScalar prt, Actions::MappingOrSequenceOrScalar types |
           types = prt.getNode("types") and
