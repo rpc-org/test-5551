@@ -81,22 +81,20 @@ class ProbableJob extends Actions::Job {
  */
 class ProbablePullRequestTarget extends Actions::On, Actions::MappingOrSequenceOrScalar {
   ProbablePullRequestTarget() {
-    exists(YAMLNode prtNode |
+    exists(Actions::MappingOrSequenceOrScalar prt |
       // The `on:` is triggered on `pull_request_target`
-      this.getNode("pull_request_target") = prtNode and
+      this.getNode("pull_request_target") = prt and
       (
         // and doesn't contain any filter
-        not exists(prtNode.getAChild())
+        not exists(prt.getAChild())
         or
         // or doesn't contain `types` filter
-        not exists(Actions::MappingOrSequenceOrScalar prt, Actions::MappingOrSequenceOrScalar types |
-          types = prt.getNode("types") and
-          prtNode = prt
+        not exists(Actions::MappingOrSequenceOrScalar types |
+          types = prt.getNode("types")
         ) or
         // or has the `types` filter, but it's something other than just [labeled]
-        exists(Actions::MappingOrSequenceOrScalar prt, Actions::MappingOrSequenceOrScalar types |
+        exists(Actions::MappingOrSequenceOrScalar types |
           types = prt.getNode("types") and
-          prtNode = prt and
           (
             not types.getElementCount() = 1 or
             not exists(types.getNode("labeled"))
