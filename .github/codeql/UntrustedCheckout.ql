@@ -75,6 +75,10 @@ class ProbableJob extends Actions::Job {
   }
 }
 
+/**
+ * Workflow triggered on `pull_request_target` trigger that doesn't only run
+ * for the `labelled` activity
+ */
 class ProbablePullRequestTarget extends Actions::On, Actions::MappingOrSequenceOrScalar {
   ProbablePullRequestTarget() {
     exists(YAMLNode prtNode |
@@ -89,7 +93,7 @@ class ProbablePullRequestTarget extends Actions::On, Actions::MappingOrSequenceO
           types = prt.getNode("types") and
           prtNode = prt
         ) or
-        // or has the filter, that is something else than just [labeled]
+        // or has the `types` filter, but it's something other than just [labeled]
         exists(Actions::MappingOrSequenceOrScalar prt, Actions::MappingOrSequenceOrScalar types |
           types = prt.getNode("types") and
           prtNode = prt and
