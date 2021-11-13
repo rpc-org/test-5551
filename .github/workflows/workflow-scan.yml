@@ -16,7 +16,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: rcowsill/workflow-scan-action@77820b8825730cd86438fa396fa4e09291549c21
+      - uses: rcowsill/workflow-scan-action@v1
         with:
           use-default-queries: false
           extra-queries: ./.github/codeql/UntrustedCheckout.ql
