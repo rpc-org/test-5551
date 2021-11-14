@@ -87,7 +87,7 @@ class ProbablePullRequestTarget extends Actions::On, Actions::MappingOrSequenceO
       // Doesn't have the `types` filter which is just [labeled]
       not exists(Actions::MappingOrSequenceOrScalar types |
         types = prt.getNode("types") and
-        forall(YAMLString type | type = types.getAChild() | type = "labeled")
+        forall(YAMLString type | type = types.getAChild() | type.getValue() = "labeled")
       )
     )
   }
