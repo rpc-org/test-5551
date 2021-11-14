@@ -77,7 +77,7 @@ class ProbableJob extends Actions::Job {
 
 /**
  * Workflow triggered on `pull_request_target` trigger that doesn't only run
- * for the `labelled` activity
+ * for the `labeled` activity
  */
 class ProbablePullRequestTarget extends Actions::On, Actions::MappingOrSequenceOrScalar {
   ProbablePullRequestTarget() {
@@ -87,8 +87,7 @@ class ProbablePullRequestTarget extends Actions::On, Actions::MappingOrSequenceO
       // Doesn't have the `types` filter which is just [labeled]
       not exists(Actions::MappingOrSequenceOrScalar types |
         types = prt.getNode("types") and
-        types.getElementCount() = 1 and
-        exists(types.getNode("labeled"))
+        forall(YAMLString type | type = types.getAChild() | type = "labeled")
       )
     )
   }
