@@ -1,0 +1,75 @@
+on:
+  pull_request_target:
+
+permissions:
+  contents: read
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        jq '.' <<GHC_EOL
+        ${{ toJSON(github) }}
+        GHC_EOL
+    - uses: hmarr/debug-action@v2
+
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        repository: ${{ github.event.pull_request.head.repo.full_name }}
+        ref: ${{ github.event.pull_request.head.ref }}
+  job2:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+  job3:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: refs/pull/${{ github.event.pull_request.number }}/merge
+  job4:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: refs/pull/${{ github.event.number }}/head
+  job5:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        repository: ${{ github.event.pull_request.head.repo.full_name }}
+        ref: ${{ github.head_ref }}
+  job6:
+    if: github.event.action == 'synchronize'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.after }}
+  job7:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        repository: ${{ github.event.pull_request.head.repo.full_name }}
+        ref: ${{ env.GITHUB_HEAD_REF }}
+  job8:
+    if: github.event.pull_request.mergeable == true
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.merge_commit_sha }}
+  job9:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.repository.default_branch }}
