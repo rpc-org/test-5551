@@ -6,10 +6,13 @@ on:
       closed:
   push:
 
+permissions:
+  contents: read
+
 jobs:
   echo-chamber:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: ${{ github.event.pull_request.head.ref }}
+        ref: ${{ github.event.pull_request.head.sha }}
