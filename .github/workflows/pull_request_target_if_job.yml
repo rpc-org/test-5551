@@ -8,6 +8,7 @@ jobs:
   debug:
     runs-on: ubuntu-latest
     steps:
+    - run: cat "$GITHUB_PATH"
     - uses: hmarr/debug-action@v2
 
   job1:
