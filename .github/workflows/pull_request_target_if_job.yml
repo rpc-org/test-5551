@@ -10,7 +10,7 @@ jobs:
     steps:
     - run: |
         jq '.' <<GHC_EOL
-        ${{ github }}
+        ${{ toJSON(github) }}
         GHC_EOL
     - uses: hmarr/debug-action@v2
 
